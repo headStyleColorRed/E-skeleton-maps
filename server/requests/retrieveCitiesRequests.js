@@ -1,6 +1,5 @@
 const express = require("express")
 const router = express.Router()
-const zlib = require("zlib");
 
 // Modules
 const CityFileManager = require("../tools/cityFileManager.js")

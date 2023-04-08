@@ -21,6 +21,7 @@ async function retrieveCities(query, amountToReturn) {
                         return {
                             name: city.name,
                             country: city.label_en,
+                            countryCode: city.country_code,
                             coordinates: city.coordinates
                         }
                     });
