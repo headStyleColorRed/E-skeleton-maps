@@ -1,11 +1,15 @@
 version: "3.5"
+
 services:
   standard-server:
     container_name: standard-server
     restart: always
-    networks: 
+    networks:
       - standard-network
     build: .
     ports:
     - "8090:8090"
-    
+
+networks:
+  standard-network:
+    driver: bridge
