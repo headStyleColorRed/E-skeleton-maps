@@ -131,13 +131,12 @@ And in the parent component:
 ```html
 <template>
     <div>
-        <FileUploader
-                class="fileUploader"
-                placeholder="Which city are you from?"
-                baseUrl="http"
-                serverIp="localhost"
-                port="8090"
-                v-on:citySelected="onCitySelected"
+        <CitySelector
+            placeholder="Which city are you from?"
+            baseUrl="http"
+            serverIp="localhost"
+            port="8090"
+            v-on:citySelected="onCitySelected"
             />
     </div>
 ```
