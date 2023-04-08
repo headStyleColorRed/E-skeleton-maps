@@ -28,14 +28,23 @@ Each city object includes the following properties:
 
 ```json
 {
-    "name": "Slough",
-    "country": "United Kingdom",
-    "coordinates": {
-        "lon": -0.59541,
-        "lat": 51.50949
-    }
+	"code": "200",
+	"message": "Success retrieving city",
+	"data": {
+		"id": "3116708",
+		"name": "Miraflores de la Sierra",
+		"country": "Spain",
+		"countryCode": "ES",
+		"coordinates": {
+			"lon": -3.76213,
+			"lat": 40.8155
+		}
+	}
 }
 ```
+
+#### `GET /retrieveCity/:id`
+Returns a city object for the specified query.
 
 #### Vue component
 
