@@ -10,9 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 app.use(Cors());
 
-app.use("/retrieveCities", require("./requests/retrieveCitiesRequests"))
-app.use("/retrieveCountries", require("./requests/retrieveCountriesRequests"))
-app.use("/retrieveCoordinates", require("./requests/retrieveCoordinatesRequests"))
+app.use("/cities", require("./requests/retrieveCitiesRequests"))
+app.use("/countries", require("./requests/retrieveCountriesRequests"))
 
 
 // Open port

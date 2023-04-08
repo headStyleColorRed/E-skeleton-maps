@@ -2,27 +2,24 @@ const express = require("express")
 const router = express.Router()
 
 // Modules
+const CityFileManager = require("../tools/cityFileManager.js")
 
-const ValidationManager = require("../tools/validation.js")
+router.get("/retrieveCities/:city/:count?", async (req, res) => {
+    let query = req.params.city;
+    let amountToReturn = req.params.count;
+    let cities = [];
 
-router.get("/retrieveCities", async (req, res) => {
-    let body = req.body
-    let users = null
-
-    // Validation
-    let validationResult = ValidationManager.validateDataFields(body, ["username"], "retrieving data");
-    if (validationResult.isError)
-        return res.status(400).send({ code: validationResult.error, status: validationResult.message });
+    if (amountToReturn === undefined) { amountToReturn = 10; }
 
     try {
-        users = await User.find({ username: body.username })
+        cities = await CityFileManager.retrieveCities(query, amountToReturn);
     } catch (err) {
         console.log(err);
         return res.status(400).send({ code: "400", message: "Error retrieving users", data: err })
     }
 
 
-    res.status(200).send({ code: "200", message: "Success retrieving users", data: user })
+    res.status(200).send({ code: "200", message: "Success retrieving cities", data: cities })
 });
 
 module.exports = router;
