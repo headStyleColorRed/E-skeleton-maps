@@ -144,6 +144,7 @@ And in the parent component:
 
 ### Credits
 This server was created by [HeadStyleColorRed](https://github.com/headStyleColorRed).
+
 City and country data is provided by the [OpenDataSoft](https://public.opendatasoft.com/explore/?sort=modified) database.
 
 ### License
