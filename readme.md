@@ -12,6 +12,15 @@ This Node.js server provides a REST API for accessing data about cities, countri
 2. Access the API endpoints at `http://localhost:8090`
 
 ### API endpoints
+
+#### Header
+All requests must include the following header:
+```json
+{
+    "authorization": "a-secure-token"
+}
+```
+
 #### `GET /retrieveCities/:city/:count?`
 Returns a list of city objects for the specified query.
 It will default to 10 results if no count is specified, with a maximum of 50 results.

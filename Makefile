@@ -1,5 +1,5 @@
 # Define variables
-NODE_ENV ?= development
+NODE_ENV ?= production
 
 .PHONY: help
 help:
