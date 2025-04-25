@@ -13,13 +13,56 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Lodash for debounce -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <style>
+        .theme--dark.v-application {
+            background: #09090b !important;
+        }
+        .theme--dark .v-card {
+            background: #1c1c1f !important;
+            border: 1px solid #27272a !important;
+            border-radius: 8px !important;
+        }
+        .theme--dark .v-autocomplete.v-input {
+            border-radius: 8px;
+            background: #1c1c1f;
+        }
+        .theme--dark .v-autocomplete.v-input .v-input__slot {
+            background: #1c1c1f !important;
+            border: 1px solid #27272a !important;
+            border-radius: 8px !important;
+        }
+        .theme--dark .v-autocomplete.v-input:hover .v-input__slot {
+            border-color: #383838 !important;
+        }
+        .theme--dark .v-autocomplete.v-input.v-input--is-focused .v-input__slot {
+            border-color: #4f4f4f !important;
+            box-shadow: 0 0 0 1px #4f4f4f !important;
+        }
+        .v-application .headline {
+            font-family: system-ui, -apple-system, sans-serif;
+            color: #e2e2e2;
+            font-size: 1.75rem !important;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        .theme--dark .v-card__subtitle {
+            color: #a1a1aa;
+        }
+        pre {
+            background: #18181b;
+            padding: 1rem;
+            border-radius: 6px;
+            color: #e2e2e2;
+            font-family: monospace;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
         <v-app>
             <v-main>
-                <v-container>
-                    <h1>City Selector Demo</h1>
+                <v-container class="py-8">
+                    <h1 class="headline">City Selector Demo</h1>
                     <city-selector
                         placeholder="Which city are you from?"
                         base-url="http"
@@ -28,9 +71,12 @@
                         @city-selected="onCitySelected"
                     ></city-selector>
 
-                    <v-card v-if="selectedCity" class="mt-4 pa-4">
-                        <h3>Selected City Details:</h3>
-                        <pre>{{ JSON.stringify(selectedCity, null, 2) }}</pre>
+                    <v-card v-if="selectedCity" class="mt-6">
+                        <v-card-title class="headline">Selected City Details</v-card-title>
+                        <v-card-subtitle>View detailed information about your selected city</v-card-subtitle>
+                        <v-card-text>
+                            <pre>{{ JSON.stringify(selectedCity, null, 2) }}</pre>
+                        </v-card-text>
                     </v-card>
                 </v-container>
             </v-main>
@@ -47,12 +93,11 @@
                     :items="items"
                     :search-input.sync="search"
                     cache-items
-                    filled
-                    hide-no-data
                     :label="placeholder"
-                    solo-inverted
                     :hint="hint"
                     persistent-hint
+                    dense
+                    class="rounded-lg"
                 />
             `,
             props: {
@@ -124,7 +169,18 @@
         // Vue Instance
         new Vue({
             el: '#app',
-            vuetify: new Vuetify(),
+            vuetify: new Vuetify({
+                theme: {
+                    dark: true,
+                    themes: {
+                        dark: {
+                            primary: '#0ea5e9',
+                            secondary: '#64748b',
+                            accent: '#6366f1',
+                        }
+                    }
+                }
+            }),
             data: {
                 selectedCity: null
             },
