@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Selector Demo</title>
+    <!-- Vue CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- Vuetify CSS and JS -->
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <!-- Axios for HTTP requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Lodash for debounce -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <v-app>
+            <v-main>
+                <v-container>
+                    <h1>City Selector Demo</h1>
+                    <city-selector
+                        placeholder="Which city are you from?"
+                        base-url="http"
+                        server-ip="localhost"
+                        port="8090"
+                        @city-selected="onCitySelected"
+                    ></city-selector>
+
+                    <v-card v-if="selectedCity" class="mt-4 pa-4">
+                        <h3>Selected City Details:</h3>
+                        <pre>{{ JSON.stringify(selectedCity, null, 2) }}</pre>
+                    </v-card>
+                </v-container>
+            </v-main>
+        </v-app>
+    </div>
+
+    <script>
+        // City Selector Component
+        Vue.component('city-selector', {
+            template: `
+                <v-autocomplete
+                    v-model="select"
+                    :loading="loading"
+                    :items="items"
+                    :search-input.sync="search"
+                    cache-items
+                    filled
+                    hide-no-data
+                    :label="placeholder"
+                    solo-inverted
+                    :hint="hint"
+                    persistent-hint
+                />
+            `,
+            props: {
+                placeholder: String,
+                baseUrl: String,
+                serverIp: String,
+                port: String
+            },
+            data() {
+                return {
+                    loading: false,
+                    items: [],
+                    search: null,
+                    select: null,
+                    cities: [],
+                };
+            },
+            methods: {
+                querySelections: _.debounce(function(v) {
+                    this.loading = true;
+
+                    try {
+                        axios
+                            .get(`${this.baseUrl}://${this.serverIp}:${this.port}/cities/retrieveCities/${v}`)
+                            .then((response) => {
+                                this.cities = response.data.data;
+                                this.items = this.cities.map((city) => {
+                                    return `${city.name} - ${city.countryCode}`;
+                                });
+                            })
+                            .finally(() => {
+                                this.loading = false;
+                            });
+                    } catch (error) {
+                        console.error(error);
+                        this.loading = false;
+                    }
+                }, 500),
+            },
+            computed: {
+                hint() {
+                    if (this.search == null) {
+                        return "Search for a city";
+                    } else if (this.items.length > 0 && this.select != undefined) {
+                        let selectedCity = this.cities.find((city) => {
+                            return `${city.name} - ${city.countryCode}` === this.select;
+                        });
+                        return selectedCity ? selectedCity.country : "Loading...";
+                    } else {
+                        return "Loading...";
+                    }
+                },
+            },
+            watch: {
+                search(val) {
+                    val && val !== this.select && this.querySelections(val);
+                },
+                select(val) {
+                    if (val) {
+                        let selectedCity = this.cities.find((city) => {
+                            return `${city.name} - ${city.countryCode}` === val;
+                        });
+                        this.$emit("citySelected", selectedCity);
+                    }
+                },
+            },
+        });
+
+        // Vue Instance
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: {
+                selectedCity: null
+            },
+            methods: {
+                onCitySelected(city) {
+                    this.selectedCity = city;
+                    console.log('Selected city:', city);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

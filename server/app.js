@@ -3,12 +3,13 @@ const app = express();
 const port = 8090;
 const Cors = require("cors")
 require('dotenv').config()
-
+const path = require('path');
 
 // Middelwares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 app.use(Cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // TOKEN VERIFICATION
 app.use((req, res, next) => {
@@ -37,7 +38,7 @@ app.listen(8090, () => console.log("Listening on port " + port))
 // ++++++++++++++++ HTTP METHODS +++++++++++++++++++ //
 
 app.get("/", (req, res) => {
-    res.send("Server is up and running! :D")
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 })
 
 
