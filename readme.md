@@ -21,7 +21,7 @@ All requests must include the following header:
 }
 ```
 
-#### `GET /retrieveCities/:city/:count?`
+#### `GET cities/retrieveCities/:city/:count?`
 Returns a list of city objects for the specified query.
 It will default to 10 results if no count is specified, with a maximum of 50 results.
 Each city object includes the following properties:
@@ -43,7 +43,7 @@ Each city object includes the following properties:
 }
 ```
 
-#### `GET /retrieveCity/:id`
+#### `GET cities/retrieveCity/:id`
 Returns a city object for the specified query.
 
 #### Vue component
